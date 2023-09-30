@@ -1,0 +1,70 @@
+<body>
+  <div style="font-size:3em; text-align:center;">
+    <button id="change"> 바꾸기 </button>
+    <button id="sup"> 속도업 </button>
+    <button id="sdown"> 속도다운 </button>
+    <h3 style="font-size:0.5em">
+      <span id="speed">1000</span>
+      <span> ms </span>
+    </h3>
+    <h1 id="show">1</h1>
+    <h1 id="hide">이치</h1>
+  </div>
+  <script>
+    let showNumber = true;
+    const prns = ['이치', '니', '산', '욘', '고', '로쿠', '나나', '하치', '큐우', '센']
+
+    const showSpeed = speed => {
+      document.querySelector('#speed').innerHTML = speed;
+    };
+
+    const startQuiz = speed => {
+      showSpeed(speed)
+
+      const showAAndHideB = (A, B) => {
+        const show = document.querySelector('#show')
+        const hide = document.querySelector('#hide')
+        show.innerHTML = A 
+        hide.innerHTML = ''
+        setTimeout(() => {
+          hide.innerHTML = B
+        }, speed)
+      }
+
+      return setInterval(() => {
+        const ranNum = Math.ceil(Math.random() * 10)
+        const ranPrn = prns[ranNum-1]
+        if(showNumber) {
+          showAAndHideB(ranNum, ranPrn)
+        } else {
+          showAAndHideB(ranPrn, ranNum)
+        }
+      }, speed * 2);
+    }
+
+
+    document.querySelector('#change')
+      .addEventListener('click', ()=> showNumber = !showNumber);
+
+    let speed = 1000
+    let interval = startQuiz(speed)
+    
+
+    document.querySelector('#sup')
+      .addEventListener('click', ()=> {
+        console.log(interval)
+        clearInterval(interval);
+        speed -= 100;
+        interval = startQuiz(speed);
+      });
+    document.querySelector('#sdown')
+      .addEventListener('click', ()=> {
+        console.log(interval)
+        clearInterval(interval);
+        speed += 100;
+        interval = startQuiz(speed);
+      });
+
+  </script>
+</body>
+
