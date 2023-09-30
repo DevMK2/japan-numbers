@@ -21,7 +21,7 @@
 
     const getPrns = num => {
       const prns = ['이치', '니', '산', '욘', '고', '로쿠', '나나', '하치', '큐우']
-      const digitPrns = ['', '주우', '하쿠', '센', '만']
+      const digitPrns = ['', '주우', '햐쿠', '센', '만']
       const getDigitProns = (num, digitIndex) => {
         if (num === 1 && digitIndex === 0) {
           return prns[num-1];
@@ -30,13 +30,13 @@
           return digitPrns[digitIndex];
         }
         else if(digitIndex === 2 && num === 3) {
-          return '산바쿠'
+          return '산뱌쿠'
         } 
         else if (digitIndex === 2 && num === 6) {
-          return '롯파쿠'
+          return '롯퍄쿠'
         }
         else if (digitIndex === 2 && num === 8) {
-          return '핫파쿠'
+          return '핫퍄쿠'
         }
         else if (digitIndex === 3 && num === 3) {
           return '산젠'
