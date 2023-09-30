@@ -3,23 +3,76 @@
     <button id="change"> 바꾸기 </button>
     <button id="sup"> 속도업 </button>
     <button id="sdown"> 속도다운 </button>
+    <button id="dup"> 자릿수업 </button>
+    <button id="ddown"> 자릿수다운 </button>
     <h3 style="font-size:0.5em">
       <span id="speed">1000</span>
       <span> ms </span>
+      <span> / </span>
+      <span> digit: </span>
+      <span id="digit"> 1 </span>
     </h3>
     <h1 id="show">1</h1>
     <h1 id="hide">이치</h1>
   </div>
   <script>
+    let digit = 1;
     let showNumber = true;
-    const prns = ['이치', '니', '산', '욘', '고', '로쿠', '나나', '하치', '큐우', '주우']
+
+    const getPrns = num => {
+      const prns = ['이치', '니', '산', '욘', '고', '로쿠', '나나', '하치', '큐우']
+      const digitPrns = ['', '주우', '하쿠', '센', '만']
+      const getDigitProns = (num, digitIndex) => {
+        if(digitIndex === 2 && num === 3) {
+          return '산바쿠'
+        } 
+        else if (digitIndex === 2 && num === 6) {
+          return '롯파쿠'
+        }
+        else if (digitIndex === 2 && num === 8) {
+          return '핫파쿠'
+        }
+        else if (digitIndex === 3 && num === 3) {
+          return '산젠'
+        }
+        else if (digitIndex === 3 && num === 8) {
+          return '핫센'
+        }
+        else if (digitIndex < 4 && num === 1) {
+          return digitPrns[digitIndex];
+        }
+        return prns[num-1] + digitPrns[digitIndex];
+      }
+
+      if(num < 10) {
+        return prns[num-1]
+      }
+
+      let dIdx = 0;
+      let result = '';
+      let n = num;
+
+      while(n >= 1) {
+        let tkn = n % 10;
+        if(tkn !== 0) {
+          result = getDigitProns(tkn, dIdx) + ' ' + result
+        }
+        n = Math.floor(n/10);
+        dIdx += 1;
+      }
+      return result
+    };
 
     const showSpeed = speed => {
       document.querySelector('#speed').innerHTML = speed;
     };
+    const showDigit = digit => {
+      document.querySelector('#digit').innerHTML = digit;
+    };
 
     const startQuiz = speed => {
       showSpeed(speed)
+      showDigit(digit)
 
       const showAAndHideB = (A, B) => {
         const show = document.querySelector('#show')
@@ -32,12 +85,14 @@
       }
 
       return setInterval(() => {
-        const ranNum = Math.ceil(Math.random() * 10)
-        const ranPrn = prns[ranNum-1]
+        //const showNum =  10000
+        const showNum = Math.ceil(Math.random() * 10 * digit)
+        const showPrn = getPrns(showNum)
+
         if(showNumber) {
-          showAAndHideB(ranNum, ranPrn)
+          showAAndHideB(showNum, showPrn)
         } else {
-          showAAndHideB(ranPrn, ranNum)
+          showAAndHideB(showPrn, showNum)
         }
       }, speed * 2);
     }
@@ -62,6 +117,24 @@
         console.log(interval)
         clearInterval(interval);
         speed += 100;
+        interval = startQuiz(speed);
+      });
+    document.querySelector('#dup')
+      .addEventListener('click', ()=> {
+        if(digit === 10000) {
+          return
+        }
+        digit *= 10;
+        clearInterval(interval);
+        interval = startQuiz(speed);
+      });
+    document.querySelector('#ddown')
+      .addEventListener('click', ()=> {
+        if(digit === 1) {
+          return
+        }
+        digit /= 10;
+        clearInterval(interval);
         interval = startQuiz(speed);
       });
 
